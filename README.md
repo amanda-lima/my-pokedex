@@ -2,17 +2,17 @@
 
 <!--Banner e logo-->
 
-<h1 align="center">
-My Pokedex
-</h1>
+<div align="center">
+<img src="https://archives.bulbagarden.net/media/upload/4/4b/Pok%C3%A9dex_logo.png">
+</div>
 
 <!-- Badges -->
 <p align="center">
    <a href="https://www.linkedin.com/in/amanda-limasobrinho/">
-      <img alt="Amanda Lima" src="https://img.shields.io/badge/-Amanda Lima-06202A?style=flat&logo=Linkedin&logoColor=white" />
+      <img alt="Amanda Lima" src="https://img.shields.io/badge/-Amanda Lima-3D3398?style=flat&logo=Linkedin&logoColor=white" />
    </a>
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/amanda-lima/my-pokedex?color=06202A"/>
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/amanda-lima/my-pokedex?color=06202A"/>
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/amanda-lima/my-pokedex?color=3D3398"/>
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/amanda-lima/my-pokedex?color=3D3398"/>
 </p>
 
 <!-- Indice-->
