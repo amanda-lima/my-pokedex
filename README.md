@@ -54,6 +54,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - Formik
 - Native Base
 - [Expo](https://expo.dev/)
+- SQLite
 
 ---
 
@@ -61,8 +62,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
   - [x]  Consumo de dados a partir de API;
   - [x]  Listagem de Pokémons;
-  - [x]  Cadastro de novas informações;
-  - [x]  Edição de informações;
+  - [x]  Cadastro de novas informações em banco de dados local;
+  - [x]  Edição de informações em banco de dados local;
 
 ---
 
