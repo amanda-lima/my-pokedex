@@ -36,7 +36,7 @@ Este é um aplicativo Pokedex desenvolvido utilizando React Native.
 <div align="center">
   <img src="https://i.imgur.com/Iz3rgVO.jpg" alt="Captura de Tela 1" width="200"/>
   <img src="https://i.imgur.com/ehEkc9Q.jpg" alt="Captura de Tela 2" width="200"/>
-  <img src="https://i.imgur.com/Lvt2DyN.jpg" alt="Captura de Tela 3" width="200"/>
+  <img src="https://i.imgur.com/CvSUs5U.jpg" alt="Captura de Tela 3" width="200"/>
   <img src="https://i.imgur.com/EeVUSWZ.jpg" alt="Captura de Tela 4" width="200"/>
 </div>
 </details>
@@ -61,7 +61,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 ## ⚙️ Funcionalidades
 
   - [x]  Consumo de dados a partir de API;
-  - [x]  Listagem de Pokémons;
+  - [x]  Listagem de Pokémons com lazy loading;
   - [x]  Cadastro de novas informações em banco de dados local;
   - [x]  Edição de informações em banco de dados local;
 
