@@ -35,7 +35,7 @@ Este é um aplicativo Pokedex desenvolvido utilizando React Native.
 <summary>Clique aqui para ver as imagens do projeto</summary>
 <div align="center">
   <img src="https://i.imgur.com/Iz3rgVO.jpg" alt="Captura de Tela 1" width="200"/>
-  <img src="https://i.imgur.com/ehEkc9Q.jpg" alt="Captura de Tela 2" width="200"/>
+  <img src="https://i.imgur.com/8477IqR.jpg" alt="Captura de Tela 2" width="200"/>
   <img src="https://i.imgur.com/CvSUs5U.jpg" alt="Captura de Tela 3" width="200"/>
   <img src="https://i.imgur.com/EeVUSWZ.jpg" alt="Captura de Tela 4" width="200"/>
 </div>
