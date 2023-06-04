@@ -1,55 +1,92 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity, Dimensions } from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity,  ActivityIndicator } from "react-native";
 import { Icon, Input } from "native-base";
-import { Pokemon } from "../../db";
 import { AuthContext } from "../context/AuthProvider";
-import { getPokemonList } from "../../api";
+import { getPokemonDetails, getPokemonList } from "../../api";
 import { Formik } from "formik";
 
-
 import { MaterialIcons } from "@expo/vector-icons";
+import { Card } from "../components/PokemonCard";
 
 interface FilteredPokemon {
     name: string;
     id: string;
     image: string;
+    types: Array<string>
 }
 
 export default function PokemonListScreen({ navigation }) {
-    const [pokemonList, setPokemonList] = useState([]);
-    const [pokemonFilteredList, setPokemonFilteredList] = useState([]);
+    const [pokemonList, setPokemonList] = useState<FilteredPokemon[]>([]);
+    const [pokemonFilteredList, setPokemonFilteredList] = useState<FilteredPokemon[]>([]);
     const [searchText, setSearchText] = useState('');
-
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
 
     const { signOut } = React.useContext(AuthContext);
 
     const filterPokemonList = () => {
-        const filteredList = pokemonList.filter((pokemon: Pokemon) =>
+        if (!pokemonList) {
+            return;
+        }
+        const filteredList = pokemonList.filter((pokemon) =>
             pokemon.name.toLowerCase().includes(searchText.toLowerCase())
         );
         setPokemonFilteredList(filteredList);
+
+        setLoading(false);
+        return filteredList;
     };
 
-    const getPokemons = async () => {
+    const pokemonDetails = async (name: string) => {
         try {
-            await getPokemonList().then((response) => {
-                const data = response.map((pokemon: any) => {
-                    return {
-                        name: pokemon.name,
-                        id: pokemon.url.split('/')[6],
-                        image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.url.split('/')[6]}.png`
-                    }
-                })
-                setPokemonList(data)
-            })
+          const result = await getPokemonDetails(name);
+          const data = {
+            name: result.name,
+            id: result.id,
+            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${result.id}.png`,
+            types: result.types.map((type) => type.type.name),
+          };
+          return data;
         } catch (error) {
-            console.log(error)
+          console.log(error);
+          return null;
+        }
+      };
+
+    const getPokemons = async (offset: number) => {
+        try {
+            const response = await getPokemonList(offset);
+            const names = response.map((pokemon) => pokemon.name);
+
+            const data = await Promise.all(names.map(async (pokemon) => {
+                const result = await pokemonDetails(pokemon);
+                return result;
+            }));
+
+            console.log(data);
+            setPokemonList((prevList) => [...prevList, ...data])
+            setLoading(false)
+        } catch (error) {
+            console.log(error);
         }
     }
+    
+    const handleLoadMore = () => {
+        setLoading(true)
+        setPage(page + 1);
+        getPokemons((page + 1) * 20)
+    };
+
     const numColumns = 2;
 
     useEffect(() => {
-        getPokemons();
+        setLoading(true); //   Define o loading como true antes de buscar os pokemons
+        getPokemons(0)
+            .then(() => setLoading(false))
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
     }, []);
 
     useEffect(() => {
@@ -83,17 +120,19 @@ export default function PokemonListScreen({ navigation }) {
             </Formik>
 
             <FlatList style={styles.list} numColumns={numColumns}
-                data={pokemonFilteredList} columnWrapperStyle={{ flex: 1, justifyContent: 'space-around', marginBottom: 10 }}
-                renderItem={({ item }: { item: { name: string, image: string, id: string } }) => (
+                data={pokemonFilteredList} columnWrapperStyle={{ flex: 1, justifyContent: 'space-around', marginBottom: 30 }}
+                renderItem={({ item }: { item: { name: string, image: string, id: string, types: Array<string> } }) => (
                     <TouchableOpacity onPress={() => navigation.navigate('PokemonDetails', { id: item.id })}>
-                        <View style={styles.listItem}>
-                            <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
-                            <Text style={styles.pokemonName}>{item.name}</Text>
+                        <View>
+                            <Card pokemon={item} />
 
                         </View>
                     </TouchableOpacity>
                 )}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.id}
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={loading ? ActivityIndicator : null}
             />
         </View>
     );
@@ -105,7 +144,7 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         paddingHorizontal: 20,
         justifyContent: "center",
-        backgroundColor: "#423E62",
+        backgroundColor: "white",
     },
     headerContainer: {
         flexDirection: "row",
@@ -116,7 +155,7 @@ const styles = StyleSheet.create({
 
     },
     icon: {
-        color: "white",
+        color: "lightgray",
         fontSize: 25,
         transform: [{ rotate: "180deg" }],
     },
@@ -141,15 +180,6 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         fontSize: 20,
-    },
-    listItem: {
-        backgroundColor: "#EAEAEA",
-        alignItems: "center",
-        height: Dimensions.get('window').width / 2.5,
-        width: Dimensions.get('window').width / 2.5,
-        justifyContent: "center",
-        padding: 10,
-        borderRadius: 5,
     },
     pokemonName: {
         fontWeight: "bold",
