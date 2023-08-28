@@ -1,7 +1,8 @@
 const BASE_URL = "https://pokeapi.co/api/v2";
 
-export async function getPokemonList() {
-  const response = await fetch(`${BASE_URL}/pokemon?limit=100000&offset=0`);
+// Função para obter a lista inicial de pokemons
+export async function getPokemonList( offset: number) {
+  const response = await fetch(`${BASE_URL}/pokemon?limit=20&offset=${offset}`);
   const data = await response.json();
   return data.results;
 }
